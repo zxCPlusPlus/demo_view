@@ -8,8 +8,7 @@
 
 class UserController extends CController {
     public function actionAddUser() {
-        $a = file_get_contents("php://input");
-        $b = json_decode($a, true);
+        $b = $this->getPostParamsJson();
         if(empty($b['name']) || empty($b['age']) ){
             echo urldecode(json_encode(array('ret' => 0, 'msg' => '参数错误')));
             exit;
@@ -23,6 +22,30 @@ class UserController extends CController {
         echo $ret;
         //发送成功返回
         //{"code":1,"data":[true]}
+    }
+    
+    public function actionGetUser() {
+        $params = $this->getGetParams();
+        echo json_encode($params);
+    }
+
+    public function getPostParamsJson() {
+        $a = file_get_contents("php://input");
+        $b = json_decode($a, true);
+        if($b === false) {
+            return array();
+        }
+        else {
+            return $b;
+        }
+    }
+
+    public function getPostParamsFormdata() {
+        return $_POST;    
+    }
+
+    public function getGetParams() {
+        return $_GET;
     }
 
     public function sendPostRequest($url, $data)
