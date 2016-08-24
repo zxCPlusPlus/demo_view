@@ -26,7 +26,12 @@ class UserController extends CController {
     
     public function actionGetUser() {
         $params = $this->getGetParams();
-        echo json_encode($params);
+        $url = 'demoapi/user/finduser';
+        $ret = $this->sendPostRequest($url, $params);
+        if($ret === false) {
+            echo urldecode(json_encode(array('ret' => 0, 'msg' => '请求发送失败')));
+        }
+        echo $ret;
     }
 
     public function getPostParamsJson() {
