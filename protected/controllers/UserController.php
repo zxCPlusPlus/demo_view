@@ -31,7 +31,12 @@ class UserController extends CController {
         if($ret === false) {
             echo urldecode(json_encode(array('ret' => 0, 'msg' => '请求发送失败')));
         }
-        echo $ret;
+        if(is_string($ret)) {
+            echo $ret;
+        }
+        else {
+            echo json_encode($ret);    
+        }
     }
 
     public function getPostParamsJson() {
@@ -59,7 +64,7 @@ class UserController extends CController {
             return array('ret' => 0, 'msg' => '参数错误');
         }
 
-        if(!is_array($data) || empty($data)) {
+        if(!is_array($data)) {
             return array('ret' => 0, 'msg' => '参数错误');
         }
 
